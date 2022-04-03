@@ -55,7 +55,7 @@ def create_posts(post: schemas.PostCreate, db: Session = Depends(get_db), user_i
 #title str, content str
 
 @router.get("/posts/{id}", response_model=schemas.Post)
-def get_post(id, response:Response, db: Session = Depends(get_db)):
+def get_post(id, response:Response, db: Session = Depends(get_db), user_id:int=Depends(oauth2.get_current_user)):
     # cursor.execute("""select * from posts where id =(%s)""", id)
     # post = cursor.fetchone()
     post = db.query(models.Post).filter(models.Post.id==id).first()
@@ -66,8 +66,8 @@ def get_post(id, response:Response, db: Session = Depends(get_db)):
     return post
 
 
-@router.delete("/posts/{id}", status_code=status.HTTP_204_NO_CONTENT )
-def delete_post(id:int, db: Session = Depends(get_db)):
+@router.delete("/posts/{id}", status_code=status.HTTP_204_NO_CONTENT, )
+def delete_post(id:int, db: Session = Depends(get_db), user_id:int=Depends(oauth2.get_current_user)):
     #deleting post
     # cursor.execute("""delete from posts where id = %s returning *""", str(id))
     # deleted_post = cursor.fetchone()
@@ -84,7 +84,7 @@ def delete_post(id:int, db: Session = Depends(get_db)):
 
 
 @router.put("/posts/{id}")
-def update_post(id:int, updated_post:schemas.PostCreate, db: Session = Depends(get_db)):
+def update_post(id:int, updated_post:schemas.PostCreate, db: Session = Depends(get_db), user_id:int=Depends(oauth2.get_current_user)):
     # cursor.execute("""update posts set title = %s, information = %s ,published = %s where id = %s returning *""", (post.title, post.information, post.published, str(id)))
     # # index = find_index_post(id)
     # updated_post = cursor.fetchone()
