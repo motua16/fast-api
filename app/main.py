@@ -9,8 +9,12 @@ import psycopg2
 import time
 # from sqlalchemy.orm import Session
 from . import models, schemas, utils
-from .database import engine, get_db
+from .database import Base, engine, get_db
 from .routers import user,post, auth
+from .config import settings
+# print(settings.database_password)
+
+
 
 
 models.Base.metadata.create_all(bind=engine)
