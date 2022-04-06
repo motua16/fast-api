@@ -14,13 +14,26 @@ from .routers import user,post, auth, vote
 from .config import settings
 # print(settings.database_password)
 
+from fastapi.middleware.cors import CORSMiddleware
 
 
 
-models.Base.metadata.create_all(bind=engine)
+# models.Base.metadata.create_all(bind=engine)
 
 
 app = FastAPI()
+
+origins =["https://www.google.com"] 
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
 # Dependency
 
 
